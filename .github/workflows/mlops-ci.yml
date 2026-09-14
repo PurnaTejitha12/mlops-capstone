@@ -5,14 +5,12 @@ on:
     branches:
       - main
       - "feat/aiml-W12-*"
-
   pull_request:
     branches:
       - main
 
 jobs:
   lint-test-build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -28,6 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install ruff
 
       - name: Lint
         run: ruff check .

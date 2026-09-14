@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 from app.model import predict
 
-
 app = FastAPI(
     title="W12 MLOps ML API",
     description="Production-style ML API for MLOps training",
