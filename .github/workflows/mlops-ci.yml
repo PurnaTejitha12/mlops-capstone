@@ -10,7 +10,8 @@ on:
       - main
 
 jobs:
-  lint-test-build:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +27,68 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install ruff
 
-      - name: Lint
+      - name: Lint with Ruff
         run: ruff check .
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run tests
         run: pytest -v
 
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Build Docker image
-        run: docker build -t w12-mlops-api:${{ github.sha }} .
+        run: |
+          docker build -t w12-mlops-api:${{ github.sha }} .
+
+  push:
+    name: Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/w12-mlops-api:latest \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/w12-mlops-api:${{ github.sha }} .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/w12-mlops-api:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/w12-mlops-api:${{ github.sha }}
