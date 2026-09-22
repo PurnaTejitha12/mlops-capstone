@@ -1,21 +1,15 @@
-from sklearn.datasets import load_iris
-from sklearn.ensemble import RandomForestClassifier
+from pathlib import Path
+
+import joblib
 
 
-def train_model():
-    iris = load_iris()
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODEL_PATH = BASE_DIR / "models" / "iris_model.joblib"
 
-    model = RandomForestClassifier(
-        n_estimators=100,
-        random_state=42,
-    )
+model_data = joblib.load(MODEL_PATH)
 
-    model.fit(iris.data, iris.target)
-
-    return model, iris.target_names
-
-
-model, target_names = train_model()
+model = model_data["model"]
+target_names = model_data["target_names"]
 
 
 def predict(features: list[float]) -> str:
