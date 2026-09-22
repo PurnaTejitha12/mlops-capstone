@@ -1,115 +1,86 @@
-🌸 Iris Flower Prediction API — MLOps Capstone
+🌸 Iris Flower Prediction — MLOps Capstone
 
-A production-oriented Machine Learning application that predicts the species of an Iris flower from its sepal and petal measurements.
-
-The project demonstrates how a machine learning model can be transformed into a tested, validated, containerised, and deployable REST API using modern MLOps practices.
+A production-style Machine Learning API for Iris flower classification, built with FastAPI, scikit-learn, Docker, automated testing, and a web-based frontend.
 
 📌 Project Overview
 
-This project serves a Scikit-learn Iris classification model through a FastAPI REST API.
+This project demonstrates an end-to-end MLOps workflow for serving a trained Machine Learning model through a REST API.
 
-The application accepts four numerical flower measurements:
+The application takes four Iris flower measurements as input and predicts the species:
 
-Sepal length
+🌱 Setosa
 
-Sepal width
+🌿 Versicolor
 
-Petal length
+🌺 Virginica
 
-Petal width
-
-The model predicts one of the following Iris species:
-
-setosa
-
-versicolor
-
-virginica
-
-Example Input
-{
-  "features": [5.1, 3.5, 1.4, 0.2]
-}
-
-Example Response
-{
-  "prediction": "setosa"
-}
+The trained model is loaded using joblib and served through a FastAPI application. A simple HTML/CSS/JavaScript frontend communicates with the API and displays the prediction.
 
 🏗️ Architecture
-                     ┌──────────────────────┐
-                     │      User / Client   │
-                     └──────────┬───────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │    HTML/CSS/JS       │
-                     │      Frontend        │
-                     └──────────┬───────────┘
-                                │
-                         HTTP POST /predict
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │       FastAPI        │
-                     │      REST API        │
-                     └──────────┬───────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │   Input Validation   │
-                     │       Pydantic       │
-                     └──────────┬───────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │    ML Prediction     │
-                     │    Scikit-learn      │
-                     └──────────┬───────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │ iris_model.joblib    │
-                     └──────────┬───────────┘
-                                │
-                                ▼
-                     ┌──────────────────────┐
-                     │ Prediction Response  │
-                     └──────────────────────┘
+                    ┌─────────────────────┐
+                    │    Web Browser      │
+                    │ HTML / CSS / JS     │
+                    └──────────┬──────────┘
+                               │
+                               │ HTTP POST
+                               ▼
+                    ┌─────────────────────┐
+                    │      FastAPI        │
+                    │      /predict       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   ML Model          │
+                    │ iris_model.joblib   │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Iris Prediction     │
+                    │ setosa / versicolor │
+                    │ / virginica         │
+                    └─────────────────────┘
+
+Deployment Architecture
+             GitHub Repository
+                    │
+          ┌─────────┴─────────┐
+          │                   │
+          ▼                   ▼
+   Render Web Service   Render Static Site
+        FastAPI              Frontend
+          │                   │
+          │◄──── HTTPS ──────┘
+          │
+          ▼
+   iris_model.joblib
 
 ✨ Features
 
-Machine learning model serving
+🚀 FastAPI REST API
 
-FastAPI REST API
+🤖 Machine Learning prediction using scikit-learn
 
-Pydantic input validation
+🌸 Iris flower classification
 
-Interactive Swagger API documentation
+✅ Pydantic request validation
 
-Automated API testing with Pytest
+🩺 Health-check endpoint
 
-Python linting with Ruff
+🧪 Automated API tests with pytest
 
-Docker containerisation
+🐳 Docker containerization
 
-GitHub Actions CI/CD
+🌐 HTML/CSS/JavaScript frontend
 
-Docker image building and publishing
+🔒 CORS support for frontend-to-API communication
 
-Frontend interface using HTML, CSS and JavaScript
+📦 Serialized ML model using Joblib
 
-API health monitoring
+🔄 GitHub-based deployment workflow
 
-ML monitoring strategy
-
-Model retraining strategy
-
-MLflow-based experiment and model lifecycle management
-
-Git-based development workflow
-
-Cloud deployment ready with Render
+☁️ Ready for Render deployment
 
 📁 Project Structure
 mlops-capstone/
@@ -141,42 +112,53 @@ mlops-capstone/
 │
 ├── .dockerignore
 ├── .gitignore
-├── .python-version
 ├── Dockerfile
 ├── pytest.ini
 ├── requirements.txt
 └── README.md
 
-🚀 Running the Project Locally
-1. Clone the Repository
-git clone <YOUR_GITHUB_REPOSITORY_URL>
-cd mlops-capstone
+🧠 Machine Learning Model
 
-2. Install Dependencies
-pip install -r requirements.txt
+The application uses the classic Iris dataset.
 
-3. Start the FastAPI Server
-uvicorn app.main:app --reload --port 8000
+The model receives four numerical features:
+
+Feature	Description	Unit
+Sepal Length	Length of the sepal	cm
+Sepal Width	Width of the sepal	cm
+Petal Length	Length of the petal	cm
+Petal Width	Width of the petal	cm
+
+The model predicts one of:
+
+setosa
+versicolor
+virginica
 
 
-The API will be available at:
+The trained model is stored at:
 
+models/iris_model.joblib
+
+🚀 API
+Base URL
+Local
 http://localhost:8000
 
-📖 API Documentation
+Production
 
-FastAPI provides interactive Swagger documentation.
+After deploying to Render:
 
-Open:
+https://YOUR-RENDER-API.onrender.com
 
-http://localhost:8000/docs
-
-🔌 API Endpoints
 GET /
 
-Returns the application status and API version.
+Returns basic API information.
 
-Example Response
+Example
+curl http://localhost:8000/
+
+Response
 {
   "message": "W12 MLOps ML API is running",
   "version": "1.0.0"
@@ -184,80 +166,81 @@ Example Response
 
 GET /health
 
-Health check endpoint used to verify API availability.
+Health-check endpoint used to verify that the API is running.
 
-Example Response
+Example
+curl http://localhost:8000/health
+
+Response
 {
   "status": "healthy"
 }
 
 POST /predict
 
-Accepts four Iris measurements and returns the predicted species.
+Predicts the Iris flower species.
 
 Request
 {
   "features": [5.1, 3.5, 1.4, 0.2]
 }
 
+Example
+curl -X POST "http://localhost:8000/predict" ^
+-H "Content-Type: application/json" ^
+-d "{\"features\":[5.1,3.5,1.4,0.2]}"
+
 Response
 {
   "prediction": "setosa"
 }
 
-Input Validation
+📖 Interactive API Documentation
 
-The API requires exactly four numerical features.
+FastAPI automatically provides interactive Swagger documentation.
 
-Invalid requests are rejected automatically using Pydantic validation.
+After starting the application, open:
 
-🧪 Testing
+http://localhost:8000/docs
 
-Pytest is used for automated API testing.
 
-Run:
+You can test /health and /predict directly from the browser.
 
+Alternative OpenAPI documentation:
+
+http://localhost:8000/redoc
+
+💻 Run Locally
+1. Clone the repository
+git clone YOUR_GITHUB_REPOSITORY_URL
+
+
+Navigate into the project:
+
+cd mlops-capstone
+
+2. Create a virtual environment
+Windows
+python -m venv .venv
+
+
+Activate it:
+
+.venv\Scripts\activate
+
+3. Install dependencies
+pip install -r requirements.txt
+
+4. Run tests
 pytest -v
 
 
-The test suite validates:
+Expected result:
 
-Root endpoint
-
-Health endpoint
-
-Prediction endpoint
-
-Invalid feature count
-
-Excess feature count
-
-Current Test Result
 5 passed
 
-
-This ensures that the main API functionality and input validation work as expected.
-
-🔍 Code Quality
-
-Ruff is used for Python linting and code quality validation.
-
-Run:
-
-ruff check .
-
-
-The same quality checks are integrated into the CI/CD pipeline.
-
-🐳 Docker
-
-The application is containerised using Docker to provide a consistent runtime environment.
-
-Build the Docker Image
-docker build -t w12-mlops-api:latest .
-
-Run the Container
-docker run -p 8000:8000 w12-mlops-api:latest
+5. Start the API
+uvicorn app.main:app --reload --port 8000
 
 
 The API will be available at:
@@ -269,112 +252,158 @@ Swagger documentation:
 
 http://localhost:8000/docs
 
+🌐 Run the Frontend
 
-Health check:
-
-http://localhost:8000/health
-
-
-Prediction endpoint:
-
-http://localhost:8000/predict
-
-🌐 Frontend
-
-A lightweight frontend is included in:
+The frontend is located in:
 
 my-frontend/index.html
 
 
-The frontend is built using:
+Start the API first:
 
-HTML
+uvicorn app.main:app --reload --port 8000
 
-CSS
 
-JavaScript
-
-It provides a simple interface where users can enter:
-
-Sepal length
-
-Sepal width
-
-Petal length
-
-Petal width
-
-The JavaScript sends the measurements to the FastAPI /predict endpoint and displays the predicted Iris species.
-
-Local Frontend
-
-The frontend can be opened directly:
+Then open:
 
 my-frontend/index.html
 
 
-When running locally, the frontend communicates with:
+in your browser.
+
+The frontend sends prediction requests to:
 
 http://localhost:8000/predict
 
 
-For production deployment, the API URL should be changed to the deployed Render backend URL.
+For production deployment, replace the localhost API URL with the Render API URL.
+
+🐳 Docker
+
+The project includes a Dockerfile for containerized deployment.
+
+Build the Docker image
+docker build -t w12-mlops-api:latest .
+
+Run the container
+docker run -d --name mlops-api -p 8000:8000 w12-mlops-api:latest
+
+Check running containers
+docker ps
+
+Test the container
+curl http://localhost:8000/health
+
+
+Expected:
+
+{
+  "status": "healthy"
+}
+
+🧪 Testing
+
+The project uses pytest for automated API testing.
+
+Current test coverage includes:
+
+Root endpoint
+
+Health endpoint
+
+Valid prediction request
+
+Invalid number of features
+
+Too many features
+
+Run:
+
+pytest -v
+
+
+Example:
+
+tests/test_api.py::test_root PASSED
+tests/test_api.py::test_health PASSED
+tests/test_api.py::test_prediction PASSED
+tests/test_api.py::test_prediction_rejects_wrong_number_of_features PASSED
+tests/test_api.py::test_prediction_rejects_too_many_features PASSED
+
+5 passed
+
+🔄 CI/CD
+
+The project contains a GitHub Actions workflow:
+
+.github/workflows/mlops-ci.yml
+
+
+The workflow can be used to automatically run project checks whenever changes are pushed to GitHub.
+
+Typical workflow:
+
+Developer
+    │
+    ▼
+Git Commit
+    │
+    ▼
+Git Push
+    │
+    ▼
+GitHub
+    │
+    ▼
+GitHub Actions
+    │
+    ├── Install dependencies
+    ├── Run tests
+    └── Validate project
 
 ☁️ Render Deployment
 
-The FastAPI application can be deployed as a Render Web Service.
+The FastAPI application can be deployed to Render as a Web Service.
 
 Backend Configuration
 
-Recommended Render settings:
+Create a new Web Service in Render and connect your GitHub repository.
 
-Service Type:       Web Service
-Language:           Python
-Branch:             main
-Root Directory:     .
-Build Command:      pip install -r requirements.txt
-Start Command:      uvicorn app.main:app --host 0.0.0.0 --port $PORT
+Use:
 
+Setting	Value
+Runtime	Python
+Branch	main
+Root Directory	Leave blank
+Build Command	pip install -r requirements.txt
+Start Command	uvicorn app.main:app --host 0.0.0.0 --port $PORT
 
-After deployment, Render provides a public API URL such as:
+After deployment, Render provides a public API URL.
+
+Example:
 
 https://your-api-name.onrender.com
 
 
-The deployed API can then be accessed through:
-
-https://your-api-name.onrender.com/
-
-
-Health endpoint:
+Test:
 
 https://your-api-name.onrender.com/health
 
 
-Swagger documentation:
+Swagger:
 
 https://your-api-name.onrender.com/docs
 
+Frontend Deployment
 
-Prediction endpoint:
+The frontend can be deployed separately as a Render Static Site.
 
-https://your-api-name.onrender.com/predict
+Frontend directory:
 
-
-Replace your-api-name with the actual Render service URL.
-
-🌍 Frontend Deployment
-
-The frontend can also be deployed as a Render Static Site.
-
-Recommended configuration:
-
-Service Type:       Static Site
-Root Directory:     my-frontend
-Publish Directory:  .
+my-frontend
 
 
-The frontend JavaScript should use the deployed FastAPI URL instead of:
+The frontend must use the deployed API URL instead of:
 
 http://localhost:8000
 
@@ -384,293 +413,127 @@ For example:
 const API_URL = "https://your-api-name.onrender.com";
 
 
-The prediction request is then sent to:
+The prediction request becomes:
 
-${API_URL}/predict
+fetch(`${API_URL}/predict`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        features: features
+    })
+});
 
-🔄 CI/CD Pipeline
+🔧 Git Workflow
 
-GitHub Actions automates the project's continuous integration workflow.
+After making changes:
 
-The workflow is located at:
+git status
 
-.github/workflows/mlops-ci.yml
 
-Pipeline
-        Code Push
-            │
-            ▼
-       GitHub Actions
-            │
-            ▼
-          Ruff
-       Code Quality
-            │
-            ▼
-         Pytest
-       Automated Tests
-            │
-            ▼
-      Docker Build
-       Image Build
-            │
-            ▼
-      Docker Publish
-       Docker Hub
-
-
-The pipeline validates the application before a Docker image is published.
-
-🐳 Docker Image Publishing
-
-The CI/CD workflow is configured to build and publish the Docker image after successful validation.
-
-The image can be published to Docker Hub using the configured GitHub Actions workflow.
-
-This provides a reproducible container image that can be used across different environments.
-
-📊 Monitoring Strategy
-
-Monitoring is considered at both the API level and the machine learning level.
-
-API Metrics
-
-Important operational metrics include:
-
-Request volume
-
-API response latency
-
-P95 latency
-
-Error rate
-
-HTTP status codes
-
-API availability
-
-CPU utilisation
-
-Memory utilisation
-
-ML Metrics
-
-Machine learning monitoring should include:
-
-Model accuracy
-
-Prediction distribution
-
-Model confidence
-
-Input feature distribution
-
-Data drift
-
-Feature drift
-
-Model performance degradation
-
-Detailed monitoring documentation is available in:
-
-docs/mlops-monitoring.md
-
-🚨 Alerting Strategy
-
-Alerts should be configured for important application and model conditions.
-
-Example thresholds include:
-
-Metric	Example Alert Threshold
-Error rate	> 5%
-P95 latency	> 1 second
-CPU utilisation	> 80%
-Memory utilisation	> 80%
-Data drift	Significant drift detected
-Model accuracy	Below production threshold
-CI/CD	Pipeline failure
-Docker	Build failure
-
-These thresholds are examples and should be adjusted according to the requirements of the production environment.
-
-🔁 Model Retraining Strategy
-
-Model retraining should be considered when production data or model performance changes significantly.
-
-Potential retraining triggers include:
-
-Model accuracy falling below the production threshold
-
-Significant input data drift
-
-Changes in feature distributions
-
-Availability of new labelled training data
-
-Production model performance degradation
-
-A future automated retraining workflow can follow:
-
-Production Data
-       │
-       ▼
-Data Validation
-       │
-       ▼
-Model Training
-       │
-       ▼
-Model Evaluation
-       │
-       ▼
-Performance Check
-       │
-       ├── Fail ──► Keep Existing Model
-       │
-       ▼
-   Pass
-       │
-       ▼
-Model Versioning
-       │
-       ▼
-Model Deployment
-
-
-This approach helps prevent an underperforming model from automatically replacing a production model.
-
-🧪 MLflow
-
-MLflow is included as part of the planned MLOps stack for experiment tracking and model lifecycle management.
-
-MLflow can be used to track:
-
-Experiments
-
-Parameters
-
-Metrics
-
-Model artifacts
-
-Model versions
-
-Model versioning improves reproducibility and makes it possible to maintain previous model versions for rollback when required.
-
-🌱 Git Workflow
-
-Development is performed using a dedicated feature branch:
-
-feat/aiml-W12-PurnaTejitha
-
-
-Recommended workflow:
-
-Feature Branch
-      │
-      ▼
-Code Changes
-      │
-      ▼
-Git Commit
-      │
-      ▼
-Push to GitHub
-      │
-      ▼
-GitHub Actions
-      │
-      ▼
-Pull Request
-      │
-      ▼
-Review / Validation
-      │
-      ▼
-main
-
-
-Example Git commands:
-
-git checkout -b feat/aiml-W12-PurnaTejitha
+Add files:
 
 git add .
 
-git commit -m "Update Iris prediction application"
 
-git push origin feat/aiml-W12-PurnaTejitha
+Commit:
+
+git commit -m "Update ML API and frontend"
 
 
-After validation, the changes can be submitted through a Pull Request and merged into main.
+Push:
 
-🛠️ Technologies
+git push origin main
+
+📊 Example Prediction
+Input
+{
+  "features": [5.1, 3.5, 1.4, 0.2]
+}
+
+Output
+{
+  "prediction": "setosa"
+}
+
+🛠️ Technology Stack
 Technology	Purpose
-Python	Application and ML development
-Scikit-learn	Machine learning model
+Python	Application & ML development
 FastAPI	REST API
 Pydantic	Request validation
+scikit-learn	Machine Learning
+Joblib	Model serialization
 Pytest	Automated testing
-Ruff	Code quality and linting
-Docker	Containerisation
-Git	Version control
-GitHub	Source code management
-GitHub Actions	CI/CD automation
-Docker Hub	Container image publishing
-MLflow	Experiment and model lifecycle management
+Docker	Containerization
+HTML	Frontend structure
+CSS	Frontend styling
+JavaScript	API communication
+GitHub	Version control & CI
 Render	Cloud deployment
-HTML/CSS/JavaScript	Frontend
-🎯 Project Objectives
+🎯 MLOps Workflow
+        ┌──────────────────┐
+        │ Model Training   │
+        │ training/train.py│
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ Trained Model    │
+        │ .joblib          │
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ FastAPI Service  │
+        │ /predict         │
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ Automated Tests  │
+        │ pytest           │
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ GitHub Actions   │
+        │ CI               │
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ Docker / Render  │
+        │ Deployment       │
+        └────────┬─────────┘
+                 │
+                 ▼
+        ┌──────────────────┐
+        │ Production API   │
+        └──────────────────┘
 
-The main objective of this capstone is to demonstrate the foundation of an end-to-end MLOps workflow by taking a machine learning model and turning it into a reliable, tested, containerised, and deployable application.
-
-The project demonstrates:
-
-Machine learning model serving
-
-REST API development
-
-Input validation
-
-Automated testing
-
-Code quality validation
-
-Docker containerisation
-
-CI/CD automation
-
-Container image publishing
-
-Frontend integration
-
-Cloud deployment
-
-API monitoring strategy
-
-ML monitoring strategy
-
-Model retraining strategy
-
-MLflow-based model lifecycle management
-
-Git-based development workflow
-
-✅ Project Status
+📌 Project Status
 Component	Status
 ML Model	✅ Complete
 FastAPI API	✅ Complete
 Input Validation	✅ Complete
-API Tests	✅ Complete
-Ruff Linting	✅ Configured
-Docker	✅ Tested Locally
+Health Check	✅ Complete
+Automated Tests	✅ Complete
+Docker	✅ Complete
 Frontend	✅ Complete
-CORS	✅ Configured
-GitHub Actions	✅ Configured
-Docker Image Publishing	✅ Configured
-Monitoring Documentation	✅ Complete
-MLflow Strategy	✅ Documented
-Retraining Strategy	✅ Documented
-Render Deployment	🚀 Ready
+GitHub	✅ Ready
+Render Backend	🚀 Ready for deployment
+Render Frontend	🚀 Ready for deployment
 👩‍💻 Author
 
-Purna Tejitha Sanisetty
+PurnaTejitha
+
+MLOps Capstone Project
+
+⭐ Project Summary
+
+This project demonstrates how a Machine Learning model can be transformed into a production-style application using:
+
+Machine Learning → API → Testing → Docker → CI/CD → Cloud Deployment → Web Frontend
+
+The final application provides an accessible web interface for making Iris flower predictions through a deployed Machine Learning API.
