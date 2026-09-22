@@ -1,6 +1,13 @@
-కింద **clean, professional, GitHub-ready README.md** గా మొత్తం content ని ఒకే writing block లో neat structure తో ఇచ్చాను. Unnecessary repetition తీసేసి, architecture, setup, API, testing, Docker, CI/CD, Render deployment అన్నీ properly organize చేశాను.
+🌸 Iris Flower Prediction — MLOps Capstone
+🚀 Live Demo
 
- README.md
+🌐 Frontend: https://iris-mlops-frontend.onrender.com/
+
+⚡ Backend API: https://iris-mlops-api-vhgk.onrender.com/
+
+📖 Swagger Docs: https://iris-mlops-api-vhgk.onrender.com/docs
+
+🩺 Health Check: https://iris-mlops-api-vhgk.onrender.com/health
 
 # 🌸 Iris Flower Prediction — MLOps Capstone
 
